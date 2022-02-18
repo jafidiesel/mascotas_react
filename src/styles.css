@@ -2,5 +2,10 @@
   text-align: center;
 }
 .global_content {
-  max-width: 400px;
+  /* max-width: 400px; */
+}
+.columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

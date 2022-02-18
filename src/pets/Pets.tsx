@@ -9,6 +9,7 @@ import FormButton from "../common/components/FormButton"
 import FormTitle from "../common/components/FormTitle"
 import GlobalContent from "../common/components/GlobalContent"
 import { RouteComponentProps } from "react-router-dom"
+import { getTransactionByTxnId } from "../nft/nftService"
 
 export default function Pets(props: RouteComponentProps) {
   const [pets, setPets] = useState<Pet[]>([])
@@ -19,7 +20,7 @@ export default function Pets(props: RouteComponentProps) {
     try {
       const result = await loadPets()
       setPets(result)
-    } catch (error) {
+    } catch (error: any) {
       errorHandler.processRestValidations(error)
     }
   }
@@ -34,6 +35,7 @@ export default function Pets(props: RouteComponentProps) {
 
   useEffect(() => {
     void loadCurrentPets()
+    //getTransactionByTxnId('KXE4MPP7EACCUYUFSSAYFQBAITVOQPFMF433P2JFEWKL7ZDMG7CA').then(res => console.log(res))
   }, [])
 
   return (
@@ -44,6 +46,7 @@ export default function Pets(props: RouteComponentProps) {
           <tr>
             <th> Nombre </th>
             <th> Descripción </th>
+            <th> NFT ID </th>
             <th> </th>
           </tr>
         </thead>
@@ -53,6 +56,7 @@ export default function Pets(props: RouteComponentProps) {
               <tr key={i}>
                 <td>{pet.name}</td>
                 <td>{pet.description}</td>
+                <td>{pet.nftId}</td>
                 <td className="text">
                   <img
                     src="/assets/edit.png"

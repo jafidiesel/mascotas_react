@@ -48,7 +48,7 @@ export default function Register(props: RouteComponentProps) {
         password,
       })
       goHome(props)
-    } catch (error) {
+    } catch (error: any) {
       errorHandler.processRestValidations(error)
     }
   }

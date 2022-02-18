@@ -38,7 +38,7 @@ export default function Login(props: RouteComponentProps) {
                 password
             })
             goHome(props)
-        } catch (error) {
+        } catch (error: any) {
             errorHandler.processRestValidations(error)
         }
     }

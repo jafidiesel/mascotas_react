@@ -6,7 +6,7 @@ export default function FormLabel(props: {
 }) {
   return (
     <div className="form-group">
-      <label>params.label</label>
+      <label>{props.label}</label>
       <input className="form-control" id="login" value={props.text} disabled />
     </div>
   )

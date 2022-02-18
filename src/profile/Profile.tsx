@@ -35,7 +35,7 @@ export default function Profile(props: RouteComponentProps) {
     try {
       const result = await getProvinces()
       setProvinces(result)
-    } catch (error) {
+    } catch (error: any) {
       errorHandler.processRestValidations(error)
     }
   }
@@ -50,7 +50,7 @@ export default function Profile(props: RouteComponentProps) {
       setPhone(result.phone)
       setPicture(result.picture)
       setProvince(result.province)
-    } catch (error) {
+    } catch (error: any) {
       errorHandler.processRestValidations(error)
     }
   }
@@ -61,7 +61,7 @@ export default function Profile(props: RouteComponentProps) {
         image,
       })
       setPicture(result.id)
-    } catch (error) {
+    } catch (error: any) {
       errorHandler.processRestValidations(error)
     }
   }
@@ -87,7 +87,7 @@ export default function Profile(props: RouteComponentProps) {
         province,
       })
       goHome(props)
-    } catch (error) {
+    } catch (error: any) {
       errorHandler.processRestValidations(error)
     }
   }
