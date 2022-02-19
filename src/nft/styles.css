@@ -1,0 +1,9 @@
+.note-field {
+	font-size: 0.8rem;
+}
+.row-elements-start {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}

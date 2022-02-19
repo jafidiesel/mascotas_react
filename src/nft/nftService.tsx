@@ -2,9 +2,10 @@ import MyAlgoConnect, { Accounts } from "@randlabs/myalgo-connect";
 import algosdk from "algosdk";
 import Axios from "axios";
 
+const algorandNetwork = process.env.REACT_APP_ALGORAND_NETWORK?.toLocaleLowerCase();
 const myAlgoConnect = new MyAlgoConnect()
-const apiClient = new algosdk.Algodv2("", 'https://api.testnet.algoexplorer.io', '');
-const indexerBasePath = 'https://algoindexer.testnet.algoexplorerapi.io';
+const apiClient = new algosdk.Algodv2("", `https://api.${algorandNetwork}.algoexplorer.io`, '');
+const indexerBasePath = `https://algoindexer.${algorandNetwork}.algoexplorerapi.io`;
 
 export async function unlockAndConnect(): Promise<Accounts[]> {
 	const settings = {
@@ -70,4 +71,12 @@ export async function getTransactionByTxnId(txnId: string) {
 
 async function getAssetByID(assetId: number|string): Promise<any> {
 	return (await Axios.get(indexerBasePath + `/v2/assets?asset-id=${assetId}`)).data
+}
+
+export async function waitForConfirmation(txId: string) {
+	return algosdk.waitForConfirmation(apiClient, txId, 4);
+}
+
+export function getAssetUrl(assetId: string ): string {
+	return `https://${algorandNetwork}.algoexplorer.io/asset/${assetId}`
 }

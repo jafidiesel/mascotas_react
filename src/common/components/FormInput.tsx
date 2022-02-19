@@ -7,6 +7,7 @@ export default function FormInput(props: {
   name: string
   errorHandler: ErrorHandler
   value?: string | undefined
+  disabled?: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => any
 }) {
   return (
@@ -18,6 +19,7 @@ export default function FormInput(props: {
         value={props.value}
         onChange={props.onChange}
         className={props.errorHandler.getErrorClass(props.name, "form-control")}
+        disabled={props.disabled}
       ></input>
       <ErrorLabel message={props.errorHandler.getErrorText(props.name)} />
     </div>

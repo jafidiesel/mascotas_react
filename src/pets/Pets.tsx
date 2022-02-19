@@ -9,7 +9,9 @@ import FormButton from "../common/components/FormButton"
 import FormTitle from "../common/components/FormTitle"
 import GlobalContent from "../common/components/GlobalContent"
 import { RouteComponentProps } from "react-router-dom"
-import { getTransactionByTxnId } from "../nft/nftService"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faExternalLink } from '@fortawesome/free-solid-svg-icons'
+import { getAssetUrl } from "../nft/nftService"
 
 export default function Pets(props: RouteComponentProps) {
   const [pets, setPets] = useState<Pet[]>([])
@@ -56,7 +58,16 @@ export default function Pets(props: RouteComponentProps) {
               <tr key={i}>
                 <td>{pet.name}</td>
                 <td>{pet.description}</td>
-                <td>{pet.nftId}</td>
+                {
+                  pet.nftId
+                  ? <td>
+                    <a href={getAssetUrl(pet.nftId)} target="_blank" rel="noreferrer" >
+                      #{pet.nftId} on Algoexplorer <FontAwesomeIcon icon={faExternalLink} color="blue"/>
+                    </a>
+                  </td>
+                  : <td>No NFT asociated</td>
+                }
+                
                 <td className="text">
                   <img
                     src="/assets/edit.png"
@@ -77,3 +88,4 @@ export default function Pets(props: RouteComponentProps) {
     </GlobalContent>
   )
 }
+
