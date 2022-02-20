@@ -7,6 +7,8 @@ export interface Pet {
   birthDate: string
   description: string
   nftId: string
+  ownerName: string
+  ownerId: string
 }
 
 export async function loadPets(): Promise<Pet[]> {
@@ -22,6 +24,8 @@ export async function newPet(payload: {
   birthDate: string
   description: string
   nftId: string,
+  ownerName: string,
+  ownerId: string
 }): Promise<Pet> {
   return (await axios.post(environment.backendUrl + "/v1/pet", payload))
     .data as Pet

@@ -1,38 +1,64 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useErrorHandler } from "../common/utils/ErrorHandler"
 import { goHome } from "../common/utils/Tools"
 import "../styles.css"
-import { newPet } from "./petsService"
+import { deletePet, loadPet, savePet } from "./petsService"
 import DangerLabel from "../common/components/DangerLabel"
 import FormInput from "../common/components/FormInput"
 import FormButtonBar from "../common/components/FormButtonBar"
 import FormButton from "../common/components/FormButton"
+import FormWarnButton from "../common/components/FormWarnButton"
 import FormTitle from "../common/components/FormTitle"
 import Form from "../common/components/Form"
 import GlobalContent from "../common/components/GlobalContent"
 import { RouteComponentProps } from "react-router-dom"
 
-
-import NewNFT from "../nft/NewNFT"
 import FormLabel from "../common/components/FormLabel"
-import { Spinner } from "reactstrap"
 import FormContentButton from "../common/components/FormContentButton"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import './styles.css'
+import { ReadOnlyNFT } from "../nft/ReadOnlyNFT"
 
-export default function NewPet(props: RouteComponentProps<{ id: string }>) {
+export default function EditPet(props: RouteComponentProps<{ id: string }>) {
 	const [birthDate, setBirthDate] = useState("")
 	const [description, setDescription] = useState("")
+	const [petId, setPetId] = useState("")
 	const [name, setName] = useState("")
 	const [ownerName, setOwnerName] = useState("")
 	const [ownerId, setOwnerDNI] = useState("")
 	const [nftId, setNFTId] = useState("")
-	const [nftInProcess, setNFTInProcess] = useState(false)
 	
 	const errorHandler = useErrorHandler()
 
-	const handlerNFTProcess = (flag: boolean) => {
+	const loadPetById = async (id: string) => {
+		if (id) {
+			try {
+				const result = await loadPet(id)
+				setBirthDate(result.birthDate)
+				setPetId(result.id)
+				setName(result.name)
+				setDescription(result.description)
+				setNFTId(result.nftId)
+				setOwnerName(result.ownerName)
+				setOwnerDNI(result.ownerId)
+			} catch (error: any) {
+				errorHandler.processRestValidations(error)
+			}
+		}
+	}
+	const deleteClick = async () => {
+		if (petId) {
+			try {
+				await deletePet(petId)
+				props.history.push("/pets")
+			} catch (error: any) {
+				errorHandler.processRestValidations(error)
+			}
+		}
+	}
+
+
+
+	const saveClick = async () => {
 		errorHandler.cleanRestValidations()
 		if (!name) {
 			errorHandler.addError("name", "No puede estar vacío")
@@ -53,32 +79,22 @@ export default function NewPet(props: RouteComponentProps<{ id: string }>) {
 		if (errorHandler.hasErrors()) {
 			return
 		}
-		setNFTInProcess(flag);
-	}
-
-	const handlerNFTId = (nftId: string) => {
-		setNFTId(nftId);
-		handlerNFTProcess(false);
-	}
-
-	const saveClick = async () => {
-		errorHandler.cleanRestValidations()
-		if (!name) {
-			errorHandler.addError("name", "No puede estar vacío")
-		}
-
-		if (errorHandler.hasErrors()) {
-			return
-		}
 
 		try {
-			await newPet({ name, birthDate, description, nftId, ownerName, ownerId})
+			await savePet({ id: petId, name, birthDate, description, nftId, ownerName, ownerId })
 			props.history.push("/pets")
-
 		} catch (error: any) {
 			errorHandler.processRestValidations(error)
 		}
 	}
+
+	useEffect(() => {
+		const id = props.match.params.id
+		if (id) {
+			void loadPetById(id)
+		}
+	}, [])
+
 
 
 	return (
@@ -89,80 +105,65 @@ export default function NewPet(props: RouteComponentProps<{ id: string }>) {
 					<h4>Datos de la mascota:</h4>
 					<Form>
 						<FormInput
-							label="Nombre *"
+							label="Nombre"
 							name="name"
 							value={name}
 							onChange={(event) => setName(event.target.value)}
 							errorHandler={errorHandler}
-							disabled={nftInProcess || !!nftId}
 						/>
 						<FormInput
-							label="Descripción *"
+							label="Descripción"
 							name="description"
 							value={description}
 							onChange={(event) => setDescription(event.target.value)}
 							errorHandler={errorHandler}
-							disabled={nftInProcess || !!nftId}
 						/>
 						<FormInput
-							label="Fecha de Nacimiento *"
+							label="Fecha de Nacimiento"
 							name="birthDate"
 							value={birthDate}
 							onChange={(event) => setBirthDate(event.target.value)}
 							errorHandler={errorHandler}
-							disabled={nftInProcess || !!nftId}
 						/>
-						<div className="row-elements-start">
-							<FormLabel text={nftId} label="NFT Id" /> 
-							{ !!nftId && <FontAwesomeIcon size="2x" icon={faCheckCircle} className="mx-2" color="green"/>}
-						</div>
+						<FormLabel text={nftId} label="NFT Id" /> 
+
+
+
 
 
 						<hr></hr>
 						<h4>Datos del dueño:</h4>
 						<FormInput
-							label="Nombre y Apellido *"
+							label="Nombre y Apellido"
 							name="nameLastname"
 							value={ownerName}
 							onChange={(event) => setOwnerName(event.target.value)}
 							errorHandler={errorHandler}
-							disabled={nftInProcess || !!nftId}
 						/>
 						<FormInput
-							label="DNI *"
+							label="DNI"
 							name="dni"
 							value={ownerId}
 							onChange={(event) => setOwnerDNI(event.target.value)}
 							errorHandler={errorHandler}
-							disabled={nftInProcess || !!nftId}
 						/>
 
 
-						<p>* campos requeridos</p>
 						<DangerLabel message={errorHandler.errorMessage} />
 						<FormButtonBar>
-							<div>
-								<FormContentButton
-									onClick={() => handlerNFTProcess(true)}
-									disabled={!!nftId || nftInProcess}
-									className="btn btn-primary"
-									content={
-										<>
-											<span>Preparar Pet NFT</span>
-											{nftInProcess && <Spinner color="info" size="sm" > </Spinner>}
-											{ !!nftId && <FontAwesomeIcon size="2x" icon={faCheckCircle} className="mx-2" color="white"/>}
-										</>
-									}
-								/>
-							</div>
+							<FormContentButton className="btn btn-success" content="Actualizar mascota" onClick={saveClick} />
 							<FormButton label="Cancelar" onClick={() => goHome(props)} />
+							<FormWarnButton
+								hidden={!petId}
+								label="Eliminar"
+								onClick={deleteClick}
+								/>
 						</FormButtonBar>
-						<br></br>
-						{nftId && <FormContentButton className="btn btn-success" content="Guardar mascota" onClick={saveClick} />}
 					</Form>
 				</div>
 				<div>
-					<NewNFT nftInProcess={nftInProcess} setNFTId={handlerNFTId} ownerName={ownerName} ownerId={ownerId}  birthDate={birthDate} description={description} name={name} />
+					{!!nftId && <ReadOnlyNFT nftId={nftId} />}
+					{/* <NewNFT nftInProcess={nftInProcess} setNFTId={handlerNFTId} ownerName={ownerName} ownerId={ownerId}  birthDate={birthDate} description={description} name={name} /> */}
 				</div>
 				
 			</div>

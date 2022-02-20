@@ -1,15 +1,13 @@
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Accounts } from "@randlabs/myalgo-connect"
-import algosdk from "algosdk"
 import React, { useState } from "react"
 import { Spinner } from "reactstrap"
 import Form from "../common/components/Form"
 import FormAcceptButton from "../common/components/FormAcceptButton"
-import FormButton from "../common/components/FormButton"
 import FormLabel from "../common/components/FormLabel"
 import FormTitle from "../common/components/FormTitle"
-import { createPetAsset, obtainNFTFromTxn, unlockAndConnect, waitForConfirmation } from "./nftService"
+import { createPetAsset, unlockAndConnect, waitForConfirmation } from "./nftService"
 import './styles.css'
 
 interface NewNFTProps {
@@ -17,7 +15,7 @@ interface NewNFTProps {
 	birthDate: string;
 	description: string;
 	ownerName: string;
-	ownerDNI: string;
+	ownerId: string;
 	nftInProcess: boolean;
 	setNFTId: (id: string) => void;
 }
@@ -35,7 +33,6 @@ export default function NewNFT(props: NewNFTProps) {
 		// step 1
 		increaseStep();
 		const accountsAccess = await unlockAndConnect();
-		console.log("step 1 complete", accountsAccess);
 		setAccount(accountsAccess);
 	}
 
@@ -43,15 +40,13 @@ export default function NewNFT(props: NewNFTProps) {
 		if (!account?.length) return;
 		// step 2
 		increaseStep();
-		const txId = await createPetAsset(account[0].address, textAreaValue , props.name.substring(0,7), props.name.substring(0,31), 'https://rb.gy/nb0edn')
-		console.log("step 2 complete", "assetResponse", txId);
+		const txId = await createPetAsset(account[0].address, textAreaValue , props.name.substring(0,7), props.name.substring(0,31), '')
 		setIsWaiting(true);
 
 		
 		// step 3
 		increaseStep();
 		const confirmation = await waitForConfirmation(txId)
-		console.log("confirmation", typeof confirmation, confirmation);
 		props.setNFTId(confirmation['asset-index'])
 		setIsWaiting(false);
 		setIsCompleted(true);
@@ -65,7 +60,7 @@ export default function NewNFT(props: NewNFTProps) {
 	},
 	owner: {
 		name: ${props.ownerName},
-		dni: ${props.ownerDNI}
+		dni: ${props.ownerId}
 	}
 }
 `;
@@ -79,7 +74,7 @@ export default function NewNFT(props: NewNFTProps) {
 				<FormLabel text={props.name.substring(0,7)} label="Unit Name:" />
 				<FormLabel text="1" label="Total Supply:" />
 				<div className="row-elements-start">
-					<FormLabel text={account && account.length ? account[0].address : ""} label="Owner/Manager address:" /> 
+					<FormLabel text={account && account.length ? account[0].address : ""} label="Creator address:" /> 
 				</div>
 				<h6>Note Field</h6>
 				<textarea disabled  rows={8} cols={25} value={textAreaValue} className="note-field" />

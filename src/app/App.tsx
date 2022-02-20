@@ -2,6 +2,7 @@ import React from "react"
 import { HashRouter, Route } from "react-router-dom"
 import LoggedInRoute from "../common/components/LoggedInRoute"
 import Info from "../info/Info"
+import EditPet from "../pets/EditPet"
 import NewPet from "../pets/NewPet"
 import Pets from "../pets/Pets"
 import Profile from "../profile/Profile"
@@ -37,8 +38,8 @@ export default function App() {
               <LoggedInRoute path="/password" component={Password} />
               <LoggedInRoute path="/profile" component={Profile} />
               <LoggedInRoute path="/pets" component={Pets} />
-              <LoggedInRoute path="/editPet" component={NewPet} />
-              <LoggedInRoute path="/editPet/:id" component={NewPet} />
+              <LoggedInRoute path="/newPet" component={NewPet} />
+              <LoggedInRoute path="/editPet/:id" component={EditPet} />
             </td>
           </tr>
         </tbody>

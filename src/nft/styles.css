@@ -7,3 +7,7 @@
 	justify-content: flex-start;
 	align-items: center;
 }
+.center-element{
+	display: flex;
+	justify-content: center;
+}
