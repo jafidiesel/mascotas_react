@@ -37,7 +37,7 @@ export function ReadOnlyNFT(props: ReadOnlyNFTProps) {
 				<div className="row-elements-start">
 					<FormLabel text={nftParams.creator} label="Creator address:" /> 
 				</div>
-				<a href={getAssetUrl(nftAsset.index)} target="_blank" rel="noreferrer" className='center-element mt-3' >
+				<a href={getAssetUrl(nftAsset.index)} target="_blank" rel="noopener noreferrer" className='center-element mt-3' >
 					#{nftAsset.index} on Algoexplorer <FontAwesomeIcon icon={faExternalLink} color="blue" className='ml-2' />
 				</a>
 		</>)

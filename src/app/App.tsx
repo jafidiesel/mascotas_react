@@ -5,6 +5,7 @@ import Info from "../info/Info"
 import EditPet from "../pets/EditPet"
 import NewPet from "../pets/NewPet"
 import Pets from "../pets/Pets"
+import { SearchPet } from "../pets/SearchPet"
 import Profile from "../profile/Profile"
 import Login from "../user/Login"
 import Password from "../user/Password"
@@ -40,6 +41,7 @@ export default function App() {
               <LoggedInRoute path="/pets" component={Pets} />
               <LoggedInRoute path="/newPet" component={NewPet} />
               <LoggedInRoute path="/editPet/:id" component={EditPet} />
+              <LoggedInRoute path="/search" component={SearchPet} />
             </td>
           </tr>
         </tbody>

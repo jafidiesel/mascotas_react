@@ -3,7 +3,7 @@ import { ErrorHandler } from "../utils/ErrorHandler"
 import ErrorLabel from "./ErrorLabel"
 
 export default function FormInput(props: {
-  label: string
+  label?: string
   name: string
   errorHandler: ErrorHandler
   value?: string | undefined
@@ -12,7 +12,7 @@ export default function FormInput(props: {
 }) {
   return (
     <div className="form-group">
-      <label>{props.label}</label>
+      {props.label &&<label>{props.label}</label>}
       <input
         id={props.name}
         type="text"
