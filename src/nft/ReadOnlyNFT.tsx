@@ -34,11 +34,12 @@ export function ReadOnlyNFT(props: ReadOnlyNFTProps) {
 				<FormLabel text={nftParams.name} label="Name:" />
 				<FormLabel text={nftParams['unit-name']} label="Unit Name:" />
 				<FormLabel text={nftParams.total} label="Total Supply:" />
+				<FormLabel text={nftAsset.index} label="NFT Id:" />
 				<div className="row-elements-start">
 					<FormLabel text={nftParams.creator} label="Creator address:" /> 
 				</div>
 				<a href={getAssetUrl(nftAsset.index)} target="_blank" rel="noopener noreferrer" className='center-element mt-3' >
-					#{nftAsset.index} on Algoexplorer <FontAwesomeIcon icon={faExternalLink} color="blue" className='ml-2' />
+					View NFT #{nftAsset.index} on Algoexplorer <FontAwesomeIcon icon={faExternalLink} color="blue" className='ml-2' />
 				</a>
 		</>)
 	}

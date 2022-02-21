@@ -75,3 +75,11 @@ export async function waitForConfirmation(txId: string) {
 export function getAssetUrl(assetId: string): string {
 	return `https://${algorandNetwork}.algoexplorer.io/asset/${assetId}`
 }
+
+export function getTxnUrl(txnId: string): string {
+	return `https://${algorandNetwork}.algoexplorer.io/tx/${txnId}`
+}
+
+export async function getTxnsAsset(assetId: string): Promise<any> {
+	return await (await Axios.get(indexerBasePath + "/v2/transactions?asset-id=" + assetId)).data
+}
