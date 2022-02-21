@@ -55,13 +55,8 @@ export async function createPetAsset(from: string, note: string, unitname: strin
 }
 
 export async function obtainNFTFromTxn(txId: string) {
-
-	
 	const assetFromTxn = await getTransactionByTxnId(txId)
-	console.log("step 3.1 complete","getTransactionByTxnId", assetFromTxn.transaction["created-asset-index"], assetFromTxn);
-
 	const asset = await getAssetByID(assetFromTxn.transaction["created-asset-index"]);
-	console.log("step 3.2 complete","getAssetByID", asset);
 	return asset;
 }
 
@@ -69,7 +64,7 @@ export async function getTransactionByTxnId(txnId: string) {
 	return await (await Axios.get(indexerBasePath + "/v2/transactions/" + txnId)).data
 }
 
-export async function getAssetByID(assetId: number|string): Promise<any> {
+export async function getAssetByID(assetId: number | string): Promise<any> {
 	return (await Axios.get(indexerBasePath + `/v2/assets?asset-id=${assetId}`)).data
 }
 
@@ -77,6 +72,6 @@ export async function waitForConfirmation(txId: string) {
 	return algosdk.waitForConfirmation(apiClient, txId, 4);
 }
 
-export function getAssetUrl(assetId: string ): string {
+export function getAssetUrl(assetId: string): string {
 	return `https://${algorandNetwork}.algoexplorer.io/asset/${assetId}`
 }

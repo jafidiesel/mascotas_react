@@ -40,3 +40,7 @@ export async function savePet(payload: Pet): Promise<Pet> {
 export async function deletePet(id: string): Promise<void> {
   await axios.delete(environment.backendUrl + "/v1/pet/" + id)
 }
+
+export async function searchPet(nftId: string): Promise<any> {
+	return (await axios.get(environment.backendUrl + "/v1/pet/nft/" + nftId)).data as Pet
+}

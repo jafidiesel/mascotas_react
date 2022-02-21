@@ -141,20 +141,18 @@ export default function NewPet(props: RouteComponentProps<{ id: string }>) {
 						<p>* campos requeridos</p>
 						<DangerLabel message={errorHandler.errorMessage} />
 						<FormButtonBar>
-							<div>
-								<FormContentButton
-									onClick={() => handlerNFTProcess(true)}
-									disabled={!!nftId || nftInProcess}
-									className="btn btn-primary"
-									content={
-										<>
-											<span>Preparar Pet NFT</span>
-											{nftInProcess && <Spinner color="info" size="sm" > </Spinner>}
-											{ !!nftId && <FontAwesomeIcon size="2x" icon={faCheckCircle} className="mx-2" color="white"/>}
-										</>
-									}
-								/>
-							</div>
+							<FormContentButton
+								onClick={() => handlerNFTProcess(true)}
+								disabled={!!nftId || nftInProcess}
+								className="btn btn-primary"
+								content={
+									<>
+										<span>Preparar Pet NFT</span>
+										{nftInProcess && <Spinner color="info" size="sm" > </Spinner>}
+										{ !!nftId && <FontAwesomeIcon size="2x" icon={faCheckCircle} className="mx-2" color="white"/>}
+									</>
+								}
+							/>
 							<FormButton label="Cancelar" onClick={() => goHome(props)} />
 						</FormButtonBar>
 						<br></br>
